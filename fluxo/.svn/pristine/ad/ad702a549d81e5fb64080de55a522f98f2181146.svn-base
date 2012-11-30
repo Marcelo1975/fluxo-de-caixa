@@ -1,0 +1,45 @@
+Ext.require(['EIA.view.fluxo.ComboRenderer']);
+Ext.require(['EIA.view.AbstractList']);
+Ext.require(['Ext.selection.CheckboxModel']);
+
+Ext.define('EIA.view.fluxo.List' ,{
+    extend		: 'EIA.view.AbstractList',
+    alias 		: 'widget.fluxoList',
+    store		: 'Fluxos',
+    title 		: 'Lista dos Fluxos',
+    //selModel: {mode: 'MULTI'},
+    selModel            : Ext.create('Ext.selection.CheckboxModel'),	
+    initComponent       : function(){
+
+		this.columns = [
+        Ext.create('Ext.grid.RowNumberer'),
+		{header: 'Código',  dataIndex: 'idFluxo',  flex: 1}, 
+		{header: 'Conta', dataIndex: 'conta_id', flex: 1,
+            //field		: Ext.create('EIA.view.agenda.ComboRenderer'),
+            renderer	: Ext.util.Format.comboRenderer(Ext.create('EIA.view.fluxo.ComboRenderer'))
+            //renderer: function (value, metadata, record, rowIndex, colIndex, store) 
+			//{                    			                 
+			//	var idx = this.columns[colIndex].field.store.find('idCategoria', value);
+			//	return idx !== -1 ? this.columns[colIndex].field.store.getAt(idx).get('NmCategoria') : '';
+           //}
+        },        
+		{header: 'Descrição',  dataIndex: 'dsDescricao',  flex: 1},         
+		{header: 'Valor',  dataIndex: 'NuValor',  flex: 1},
+		{header		: 'Data',  
+            dataIndex	: 'dtFluxo',  
+            flex		: 1, 
+            xtype		: 'datecolumn', 
+            format		: 'd/m/Y'
+        } 			
+		]; 
+		
+		this.dockedItems = [{
+            xtype: 'pagingtoolbar',
+            store: 'Fluxos',
+            dock: 'bottom',
+            displayInfo: true
+        }];
+		
+        this.callParent();        
+    }   
+});
